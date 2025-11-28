@@ -1,0 +1,36 @@
+/* Footer */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 60px 0 30px;
+    margin-top: 80px;
+}
+
+.footer-title {
+    color: white;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.footer-link {
+    color: white;
+    text-decoration: none;
+    display: block;
+    margin-bottom: 10px;
+    transition: color 0.3s;
+}
+
+.footer-link:hover {
+    color: var(--main-pink);
+}
+
+.social-icon {
+    color: white;
+    font-size: 1.5rem;
+    margin-right: 15px;
+    transition: color 0.3s;
+}
+
+.social-icon:hover {
+    color: var(--main-pink);
+}
