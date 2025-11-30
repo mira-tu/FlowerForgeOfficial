@@ -216,7 +216,7 @@
     opacity: 0.5;
 }
 
-.customize-page .empty-state i {
+.customize-page .empty-state svg {
     font-size: 3rem;
     margin-bottom: 1rem;
     color: var(--text-muted);
@@ -264,9 +264,12 @@
     position: relative;
 }
 
-.customize-page .tool-btn i {
+.customize-page .tool-btn .icon-wrapper {
     font-size: 1.4rem;
     transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .customize-page .tool-btn span {
@@ -279,7 +282,7 @@
     background: #fff0f6;
 }
 
-.customize-page .tool-btn:hover i {
+.customize-page .tool-btn:hover .icon-wrapper {
     transform: translateY(-2px);
 }
 

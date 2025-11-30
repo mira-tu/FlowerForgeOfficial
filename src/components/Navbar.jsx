@@ -22,7 +22,7 @@ const Navbar = ({ cartCount, onSearchToggle }) => {
                                 Services
                             </a>
                             <ul className="dropdown-menu services-menu border-0 shadow-sm">
-                                <li><Link className="dropdown-item" to="/book-event">Book an Event</Link></li>
+                                <li><Link className="dropdown-item" to="/book-event">Booking for an Event</Link></li>
                                 <li><Link className="dropdown-item" to="/customized">Customized Bouquets</Link></li>
                                 <li><Link className="dropdown-item" to="/special-order">Special Add-ons</Link></li>
                             </ul>
@@ -32,11 +32,14 @@ const Navbar = ({ cartCount, onSearchToggle }) => {
                         <a href="#" className="btn-icon" onClick={(e) => { e.preventDefault(); onSearchToggle(); }}>
                             <i className="fa-solid fa-search"></i>
                         </a>
-                        <Link to="/wishlist" className="btn-icon"><i className="fa-regular fa-heart"></i></Link>
+                        <Link to="/wishlist" className="btn-icon">
+                            <i className="fa-regular fa-heart"></i>
+                        </Link>
                         <Link to="/cart" className="btn-icon">
                             <i className="fa-solid fa-cart-shopping"></i>
                             <span className="badge-count">{cartCount}</span>
                         </Link>
+                        <Link to="/profile" className="btn-icon"><i className="fa-regular fa-user"></i></Link>
                         <Link to="/login" className="btn btn-outline-danger ms-3 rounded-pill px-4 btn-sm">Login</Link>
                     </div>
                 </div>

@@ -1,9 +1,11 @@
 import React, { useState, useRef } from 'react';
+import RequestSuccessModal from '../components/RequestSuccessModal';
 import '../styles/SpecialOrder.css';
 
 const initialFormState = {
     recipientName: '',
     occasion: '',
+    otherOccasion: '',
     preferences: '',
     addon: '',
     inspirationFile: null,
@@ -13,6 +15,7 @@ const initialFormState = {
 const SpecialOrder = () => {
     const [formData, setFormData] = useState(initialFormState);
     const [status, setStatus] = useState(null);
+    const [showModal, setShowModal] = useState(false);
     const fileInputRef = useRef(null);
 
     const handleChange = (event) => {
@@ -23,12 +26,29 @@ const SpecialOrder = () => {
             return;
         }
 
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        setFormData((prev) => ({
+            ...prev,
+            [name]: value,
+            ...(name === 'occasion' && value !== 'Other' ? { otherOccasion: '' } : {}),
+        }));
+    };
+
+    const openFilePicker = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
+    const handleUploadKeyDown = (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openFilePicker();
+        }
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setStatus({ type: 'success', message: 'Special order submitted! We will reach out soon.' });
+        setShowModal(true);
         setFormData(initialFormState);
 
         if (fileInputRef.current) {
@@ -95,8 +115,26 @@ const SpecialOrder = () => {
                                                     <option value="MothersDay">Mother's Day</option>
                                                     <option value="JustBecause">Just Because</option>
                                                     <option value="Apology">Apology</option>
+                                                    <option value="Other">Other</option>
                                                 </select>
                                             </div>
+                                            {formData.occasion === 'Other' && (
+                                                <div className="col-12">
+                                                    <div className="p-4 bg-white rounded-4 border shadow-sm">
+                                                        <label className="form-label fw-semibold" htmlFor="otherOccasion">Tell us about the occasion</label>
+                                                        <input
+                                                            type="text"
+                                                            id="otherOccasion"
+                                                            name="otherOccasion"
+                                                            className="form-control bg-light border-0 py-3"
+                                                            placeholder="Describe the celebration"
+                                                            value={formData.otherOccasion}
+                                                            onChange={handleChange}
+                                                            required={formData.occasion === 'Other'}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
                                             <div className="col-12 mt-4">
                                                 <label className="form-label fw-semibold" htmlFor="preferences">Your Vision in Words</label>
                                                 <textarea
@@ -128,7 +166,13 @@ const SpecialOrder = () => {
                                             </div>
                                             <div className="col-12 mt-4">
                                                 <label className="form-label fw-semibold" htmlFor="inspirationFile">Inspiration Gallery</label>
-                                                <div className="upload-box p-5 text-center bg-light rounded-4 border-dashed">
+                                                <div
+                                                    className="upload-box p-5 text-center bg-light rounded-4 border-dashed"
+                                                    role="button"
+                                                    tabIndex={0}
+                                                    onClick={openFilePicker}
+                                                    onKeyDown={handleUploadKeyDown}
+                                                >
                                                     <i className="fas fa-cloud-upload-alt fa-2x text-primary mb-3"></i>
                                                     <p className="mb-2">Upload a file or drag and drop</p>
                                                     <input
@@ -170,6 +214,11 @@ const SpecialOrder = () => {
                     </div>
                 </div>
             </section>
+            <RequestSuccessModal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                message="Your special order request has been sent to the admin. Please wait for confirmation."
+            />
         </div>
     );
 };

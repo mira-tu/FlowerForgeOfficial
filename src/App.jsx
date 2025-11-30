@@ -12,6 +12,11 @@ import Cart from './pages/Cart'
 import Customized from './pages/Customized'
 import BookEvent from './pages/BookEvent'
 import SpecialOrder from './pages/SpecialOrder'
+import ProductDetail from './pages/ProductDetail'
+import Checkout from './pages/Checkout'
+import OrderSuccess from './pages/OrderSuccess'
+import OrderTracking from './pages/OrderTracking'
+import Profile from './pages/Profile'
 
 // Admin Components
 import AdminLayout from './pages/admin/AdminLayout'
@@ -49,64 +54,68 @@ function AppContent() {
         return [...prevCart, { name, price, image, qty: 1 }];
       }
     });
-    alert(`${name} added to cart!`);
   };
 
   const cartCount = cart.reduce((acc, item) => acc + (item.qty || 0), 0);
 
-  return (
-    <>
-      {showNavbar && (
-        <Navbar
-          cartCount={cartCount}
-          onSearchToggle={() => setIsSearchVisible(!isSearchVisible)}
-        />
-      )}
+return (
+  <>
+    {showNavbar && (
+      <Navbar
+        cartCount={cartCount}
+        onSearchToggle={() => setIsSearchVisible(!isSearchVisible)}
+      />
+    )}
 
-      {showNavbar && (
-        <div className={`container py-3 ${isSearchVisible ? '' : 'd-none'}`} id="searchContainer">
-          <div className="input-group">
-            <input
-              type="text"
-              className="form-control rounded-pill"
-              id="searchInput"
-              placeholder="Search for flowers..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button className="btn btn-outline-secondary rounded-pill ms-2" type="button">Search</button>
-          </div>
+    {showNavbar && (
+      <div className={`container py-3 ${isSearchVisible ? '' : 'd-none'}`} id="searchContainer">
+        <div className="input-group">
+          <input
+            type="text"
+            className="form-control rounded-pill"
+            id="searchInput"
+            placeholder="Search for flowers..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button className="btn btn-outline-secondary rounded-pill ms-2" type="button">Search</button>
         </div>
-      )}
+      </div>
+    )}
 
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/" element={<Home addToCart={addToCart} searchTerm={searchTerm} />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/book-event" element={<BookEvent />} />
-        <Route path="/customized" element={<Customized addToCart={addToCart} />} />
-        <Route path="/special-order" element={<SpecialOrder />} />
-        <Route path="/events" element={<div className="container py-5"><h2>Events Page</h2></div>} />
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<Home addToCart={addToCart} searchTerm={searchTerm} />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/wishlist" element={<Wishlist cart={cart} setCart={setCart} />} />
+      <Route path="/cart" element={<Cart cart={cart} setCart={setCart} />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/book-event" element={<BookEvent />} />
+      <Route path="/customized" element={<Customized addToCart={addToCart} />} />
+      <Route path="/special-order" element={<SpecialOrder />} />
+      <Route path="/product/:productId" element={<ProductDetail addToCart={addToCart} />} />
+      <Route path="/checkout" element={<Checkout setCart={setCart} />} />
+      <Route path="/order-success/:orderId" element={<OrderSuccess />} />
+      <Route path="/order-tracking/:orderId" element={<OrderTracking />} />
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/events" element={<div className="container py-5"><h2>Events Page</h2></div>} />
 
-        {/* Admin Routes */}
-        <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="shop" element={<ShopManager />} />
-          <Route path="orders" element={<OrderManager />} />
-          <Route path="messages" element={<Messages />} />
-          <Route path="settings" element={<AdminSettings />} />
-        </Route>
-      </Routes>
+      {/* Admin Routes */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="shop" element={<ShopManager />} />
+        <Route path="orders" element={<OrderManager />} />
+        <Route path="messages" element={<Messages />} />
+        <Route path="settings" element={<AdminSettings />} />
+      </Route>
+    </Routes>
 
-      {showNavbar && <Footer />}
-    </>
-  );
+    {showNavbar && <Footer />}
+  </>
+);
 }
 
 function App() {

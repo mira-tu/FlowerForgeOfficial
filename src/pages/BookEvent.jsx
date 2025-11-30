@@ -1,11 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
+import RequestSuccessModal from '../components/RequestSuccessModal';
 import '../styles/BookEvent.css';
 
 const initialFormState = {
     fullName: '',
     eventType: '',
+    otherEventType: '',
     eventDate: '',
-    eventTime: '',
     venue: '',
     details: '',
     inspirationFile: null,
@@ -14,7 +15,15 @@ const initialFormState = {
 const BookEvent = () => {
     const [formData, setFormData] = useState(initialFormState);
     const [status, setStatus] = useState(null);
+    const [showModal, setShowModal] = useState(false);
     const fileInputRef = useRef(null);
+    const minEventDate = useMemo(() => {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }, []);
 
     const handleChange = (event) => {
         const { name, value, files } = event.target;
@@ -24,12 +33,35 @@ const BookEvent = () => {
             return;
         }
 
-        setFormData((prev) => ({ ...prev, [name]: value }));
+        let nextValue = value;
+
+        if (name === 'eventDate' && value) {
+            nextValue = value < minEventDate ? minEventDate : value;
+        }
+
+        setFormData((prev) => ({
+            ...prev,
+            [name]: nextValue,
+            ...(name === 'eventType' && nextValue !== 'Other' ? { otherEventType: '' } : {}),
+        }));
+    };
+
+    const openFilePicker = () => {
+        if (fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
+    const handleUploadKeyDown = (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            openFilePicker();
+        }
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        setStatus({ type: 'success', message: 'Inquiry submitted! We will be in touch shortly.' });
+        setShowModal(true);
         setFormData(initialFormState);
 
         if (fileInputRef.current) {
@@ -92,6 +124,23 @@ const BookEvent = () => {
                                                     <option value="Other">Other</option>
                                                 </select>
                                             </div>
+                                            {formData.eventType === 'Other' && (
+                                                <div className="col-12">
+                                                    <div className="p-4 bg-white rounded-4 border shadow-sm">
+                                                        <label className="form-label fw-semibold" htmlFor="otherEventType">Tell us about the occasion</label>
+                                                        <input
+                                                            type="text"
+                                                            id="otherEventType"
+                                                            name="otherEventType"
+                                                            className="form-control bg-light border-0 py-3"
+                                                            placeholder="Describe the celebration"
+                                                            value={formData.otherEventType}
+                                                            onChange={handleChange}
+                                                            required={formData.eventType === 'Other'}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
                                             <div className="col-md-6">
                                                 <label className="form-label fw-semibold" htmlFor="eventDate">Event Date</label>
                                                 <input
@@ -101,18 +150,7 @@ const BookEvent = () => {
                                                     className="form-control bg-light border-0 py-3"
                                                     value={formData.eventDate}
                                                     onChange={handleChange}
-                                                    required
-                                                />
-                                            </div>
-                                            <div className="col-md-6">
-                                                <label className="form-label fw-semibold" htmlFor="eventTime">Event Time</label>
-                                                <input
-                                                    type="time"
-                                                    id="eventTime"
-                                                    name="eventTime"
-                                                    className="form-control bg-light border-0 py-3"
-                                                    value={formData.eventTime}
-                                                    onChange={handleChange}
+                                                    min={minEventDate}
                                                     required
                                                 />
                                             </div>
@@ -143,7 +181,13 @@ const BookEvent = () => {
                                             </div>
                                             <div className="col-12">
                                                 <label className="form-label fw-semibold" htmlFor="inspirationFile">Inspiration Gallery</label>
-                                                <div className="upload-box p-5 text-center bg-light rounded-4 border-dashed">
+                                                <div
+                                                    className="upload-box p-5 text-center bg-light rounded-4 border-dashed"
+                                                    role="button"
+                                                    tabIndex={0}
+                                                    onClick={openFilePicker}
+                                                    onKeyDown={handleUploadKeyDown}
+                                                >
                                                     <i className="fas fa-cloud-upload-alt fa-2x text-primary mb-3"></i>
                                                     <p className="mb-2">Upload a file or drag and drop</p>
                                                     <input
@@ -173,6 +217,11 @@ const BookEvent = () => {
                     </div>
                 </div>
             </section>
+            <RequestSuccessModal
+                show={showModal}
+                onClose={() => setShowModal(false)}
+                message="Your event inquiry has been sent to the admin. Please wait for confirmation."
+            />
         </div>
     );
 };

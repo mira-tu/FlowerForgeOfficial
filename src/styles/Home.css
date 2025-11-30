@@ -169,3 +169,107 @@
     background: var(--main-pink);
     color: white;
 }
+
+/* Wishlist Heart Button */
+.wishlist-heart-btn {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.wishlist-heart-btn i {
+    font-size: 1.1rem;
+    color: #ccc;
+    transition: all 0.3s ease;
+}
+
+.wishlist-heart-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.wishlist-heart-btn:hover i {
+    color: var(--main-pink);
+}
+
+.wishlist-heart-btn.active i {
+    color: var(--main-pink);
+}
+
+/* Wishlist Popup Notification */
+.wishlist-popup {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, var(--main-pink) 0%, #d65d7a 100%);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 50px;
+    box-shadow: 0 8px 25px rgba(240, 123, 150, 0.4);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1rem;
+    animation: slideDown 0.4s ease, fadeOut 0.4s ease 1.6s forwards;
+}
+
+.wishlist-popup i {
+    font-size: 1.2rem;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* Cart Popup Notification */
+.cart-popup {
+    position: fixed;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 50px;
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1rem;
+    animation: slideDown 0.4s ease, fadeOut 0.4s ease 1.6s forwards;
+}
+
+.cart-popup i {
+    font-size: 1.2rem;
+}

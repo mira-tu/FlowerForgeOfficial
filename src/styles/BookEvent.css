@@ -22,6 +22,13 @@
 
 .upload-box {
     border-radius: 24px;
+    cursor: pointer;
+}
+
+.upload-box:focus,
+.upload-box:focus-within {
+    outline: 3px solid rgba(240, 123, 150, 0.6);
+    outline-offset: 4px;
 }
 
 .border-dashed {
@@ -40,8 +47,16 @@
 }
 
 .btn-pink:hover {
+    background-color: #d63384;
     color: #fff;
     transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(240, 123, 150, 0.4);
+}
+
+.btn-pink:focus,
+.btn-pink:active {
+    background-color: #f07b96;
+    color: #fff;
     box-shadow: 0 5px 15px rgba(240, 123, 150, 0.4);
 }
 
