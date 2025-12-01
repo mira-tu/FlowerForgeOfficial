@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/Navbar.css';
 
-const Navbar = ({ cartCount, onSearchToggle }) => {
+const Navbar = ({ cartCount }) => {
     return (
         <nav className="navbar navbar-expand-lg fixed-top">
             <div className="container-fluid px-5">
@@ -29,9 +29,6 @@ const Navbar = ({ cartCount, onSearchToggle }) => {
                         </li>
                     </ul>
                     <div className="nav-icons d-flex align-items-center">
-                        <a href="#" className="btn-icon" onClick={(e) => { e.preventDefault(); onSearchToggle(); }}>
-                            <i className="fa-solid fa-search"></i>
-                        </a>
                         <Link to="/wishlist" className="btn-icon">
                             <i className="fa-regular fa-heart"></i>
                         </Link>

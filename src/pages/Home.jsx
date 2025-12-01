@@ -92,9 +92,10 @@ const products = [
     { id: 'v9', name: 'Forever Yours', price: 2900, category: 'Valentines', image: val9 },
 ];
 
-const Home = ({ addToCart, searchTerm }) => {
+const Home = ({ addToCart }) => {
     const navigate = useNavigate();
     const [selectedCategory, setSelectedCategory] = useState('All');
+    const [searchTerm, setSearchTerm] = useState('');
     const [wishlist, setWishlist] = useState([]);
     const [showWishlistPopup, setShowWishlistPopup] = useState(false);
     const [popupMessage, setPopupMessage] = useState('');
@@ -219,8 +220,31 @@ const Home = ({ addToCart, searchTerm }) => {
                 </button>
             </div>
 
-            {/* Categories */}
+            {/* Search and Categories */}
             <div className="container">
+                {/* Search Bar */}
+                <div className="search-section">
+                    <div className="search-wrapper">
+                        <i className="fa-solid fa-search search-icon"></i>
+                        <input
+                            type="text"
+                            className="search-input"
+                            placeholder="Search for flowers..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                        {searchTerm && (
+                            <button 
+                                className="search-clear"
+                                onClick={() => setSearchTerm('')}
+                            >
+                                <i className="fa-solid fa-times"></i>
+                            </button>
+                        )}
+                    </div>
+                </div>
+
+                {/* Category Filters */}
                 <div className="category-nav text-center">
                     {categories.map((category) => (
                         <button

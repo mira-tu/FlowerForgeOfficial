@@ -36,8 +36,7 @@ function AppContent() {
     const savedCart = localStorage.getItem('cart');
     return savedCart ? JSON.parse(savedCart) : [];
   });
-  const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+
 
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -61,31 +60,12 @@ function AppContent() {
 return (
   <>
     {showNavbar && (
-      <Navbar
-        cartCount={cartCount}
-        onSearchToggle={() => setIsSearchVisible(!isSearchVisible)}
-      />
-    )}
-
-    {showNavbar && (
-      <div className={`container py-3 ${isSearchVisible ? '' : 'd-none'}`} id="searchContainer">
-        <div className="input-group">
-          <input
-            type="text"
-            className="form-control rounded-pill"
-            id="searchInput"
-            placeholder="Search for flowers..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <button className="btn btn-outline-secondary rounded-pill ms-2" type="button">Search</button>
-        </div>
-      </div>
+      <Navbar cartCount={cartCount} />
     )}
 
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={<Home addToCart={addToCart} searchTerm={searchTerm} />} />
+      <Route path="/" element={<Home addToCart={addToCart} />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/wishlist" element={<Wishlist cart={cart} setCart={setCart} />} />
